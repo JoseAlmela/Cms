@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EurovalBusinessLogic\EurovalBusinessLogic.csproj" />
+    <ProjectReference Include="..\EurovalDataAccess\EurovalDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

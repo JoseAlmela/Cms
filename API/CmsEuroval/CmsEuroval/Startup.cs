@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
+using EurovalDataAccess.Entities;
+using EurovalDataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace CmsEuroval
 {
@@ -24,6 +27,12 @@ namespace CmsEuroval
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<CmsUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<EurovalCmsContext>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
@@ -42,6 +51,10 @@ namespace CmsEuroval
                 };
             });
 
+            services.AddDbContext<EurovalCmsContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("CmsEurovalConnectionString"), b => b.MigrationsAssembly("CmsEuroval"));
+            });
             services.AddAutoMapper();
         }
 
