@@ -34,7 +34,7 @@ namespace CmsEuroval
             .AddEntityFrameworkStores<EurovalCmsContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+                .AddJsonOptions(opt => {opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;});
 
             services.AddAuthentication(options =>
             {
@@ -73,6 +73,13 @@ namespace CmsEuroval
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+
+            var serviceScopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
+            using (var serviceScope = serviceScopeFactory.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetService<EurovalCmsContext>();
+                dbContext.Database.EnsureCreated();
+            }
         }
     }
 }

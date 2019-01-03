@@ -22,12 +22,12 @@ namespace EurovalDataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //builder.Entity<Pista>()
-            //   .HasData(CmsExampleData.Pistas);
-            //builder.Entity<Socio>()
-            //   .HasData(CmsExampleData.Socios);
-            //builder.Entity<Reserva>()
-            //   .HasData(CmsExampleData.Reservas);
+            builder.Entity<Pista>()
+               .HasData(CmsExampleData.Pistas);
+            builder.Entity<Socio>()
+               .HasData(CmsExampleData.Socios);
+            builder.Entity<Reserva>()
+               .HasData(CmsExampleData.Reservas);
         }
     }
 }
