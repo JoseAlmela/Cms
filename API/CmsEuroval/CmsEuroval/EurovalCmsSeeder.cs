@@ -42,8 +42,8 @@ namespace CmsEuroval
                 user = new CmsUser
                 {
                     ApiUser = true,
-                    Email = "josealmelaperez@gmail.com",
-                    UserName = "josealmelaperez@gmail.com"
+                    Email = "jose@euroval.com",
+                    UserName = "jose@euroval.com"
                 };
 
                 var result = await _userManager.CreateAsync(user, "P@ssw0rd!");
