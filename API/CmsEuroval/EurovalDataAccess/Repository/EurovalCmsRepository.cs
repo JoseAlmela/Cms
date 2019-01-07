@@ -186,17 +186,17 @@ namespace EurovalDataAccess.Repository
                 if (includeExtraInfo)
                 {
                     
-                    return _ctx.Reservas
+                    return await _ctx.Reservas
                     .AsNoTracking()
                     .Include(r => r.Pista)
                     .Include(r => r.Socio)
-                    .OrderBy(r=> r.FechaReserva).ToList();
+                    .OrderBy(r=> r.FechaReserva).ToListAsync();
                 }
                 else
                 {
-                    return _ctx.Reservas
+                    return await _ctx.Reservas
                         .AsNoTracking()
-                        .OrderBy(r => r.FechaReserva).ToList();
+                        .OrderBy(r => r.FechaReserva).ToListAsync();
                 }
             }
             catch (Exception ex)
