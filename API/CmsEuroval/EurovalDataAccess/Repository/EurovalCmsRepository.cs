@@ -200,6 +200,11 @@ namespace EurovalDataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Reserva> GetReservaAsync(int id)
         {
             try
