@@ -23,12 +23,12 @@ namespace CmsEuroval
     [Produces("text/json")]
     public class PistasController : ControllerBase
     {
-        private readonly IEurovalCmsService _context;
+        private readonly IEurovalCmsService _serviceCms;
         private readonly ILogger<PistasController> _logger;
 
         public PistasController(IEurovalCmsService context, ILogger<PistasController> logging)
         {
-            _context = context;
+            _serviceCms = context;
             this._logger = logging;
         }
 
@@ -40,7 +40,7 @@ namespace CmsEuroval
         {
             try
             {
-                return  Ok(await _context.GetPistasAsync());
+                return  Ok(await _serviceCms.GetPistasAsync());
 
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace CmsEuroval
 
             try
             {
-                var pista = await _context.GetPistaAsync(id);
+                var pista = await _serviceCms.GetPistaAsync(id);
 
                 if (pista == null)
                 {
@@ -98,7 +98,7 @@ namespace CmsEuroval
 
             try
             {
-                pista = await _context.UpdatePistaAsync(pista);
+                pista = await _serviceCms.UpdatePistaAsync(pista);
                 if(pista == null)
                 {
                     return NotFound($"Pista {id} Not found");
@@ -126,7 +126,7 @@ namespace CmsEuroval
 
             try
             {
-               await _context.CreatePistaAsync(pista);
+               await _serviceCms.CreatePistaAsync(pista);
               
             }
             catch (Exception ex)
@@ -154,13 +154,13 @@ namespace CmsEuroval
 
             try
             {
-                pista = await _context.GetPistaAsync(id);
+                pista = await _serviceCms.GetPistaAsync(id);
                 if (pista == null)
                 {
                     return NotFound($"Pista is not found {id}");
                 }
 
-                await _context.RemovePistaAsync(id);
+                await _serviceCms.RemovePistaAsync(id);
             }
             catch (Exception ex)
             {
@@ -173,7 +173,7 @@ namespace CmsEuroval
 
         private async Task<bool> PistaExists(int id)
         {
-            return await _context.PistaExistsAsync(id);
+            return await _serviceCms.PistaExistsAsync(id);
         }
     }
 }

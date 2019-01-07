@@ -181,17 +181,23 @@ namespace EurovalDataAccess.Repository
             try
             {
                 _logger.LogInformation($"{nameof(GetAllReservasAsync)} was called");
-                var q = _ctx.Reservas
-                           .AsNoTracking()
-                           .OrderBy(p => p.FechaReserva);
+                
+
                 if (includeExtraInfo)
                 {
-                    q.Include(r => r.Pista);
-                    q.Include(r => r.Socio);
-
+                    
+                    return _ctx.Reservas
+                    .AsNoTracking()
+                    .Include(r => r.Pista)
+                    .Include(r => r.Socio)
+                    .OrderBy(r=> r.FechaReserva).ToList();
                 }
-                return await q                          
-                           .ToListAsync();
+                else
+                {
+                    return _ctx.Reservas
+                        .AsNoTracking()
+                        .OrderBy(r => r.FechaReserva).ToList();
+                }
             }
             catch (Exception ex)
             {

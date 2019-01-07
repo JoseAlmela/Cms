@@ -23,12 +23,12 @@ namespace CmsEuroval
     [Produces("text/json")]
     public class ReservasController : ControllerBase
     {
-        private readonly IEurovalCmsService _context;
+        private readonly IEurovalCmsService _serviceCms;
         private readonly ILogger<ReservasController> _logger;
 
         public ReservasController(IEurovalCmsService context, ILogger<ReservasController> logging)
         {
-            _context = context;
+            _serviceCms = context;
             this._logger = logging;
         }
 
@@ -40,7 +40,7 @@ namespace CmsEuroval
         {
             try
             {
-                return  Ok(await _context.GetReservasAsync(includeExtraInfo));
+                return  Ok(await _serviceCms.GetReservasAsync(includeExtraInfo));
 
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace CmsEuroval
 
             try
             {
-                var reserva = await _context.GetReservaAsync(id);
+                var reserva = await _serviceCms.GetReservaAsync(id);
 
                 if (reserva == null)
                 {
@@ -98,7 +98,7 @@ namespace CmsEuroval
 
             try
             {
-                reserva = await _context.UpdateReservaAsync(reserva);
+                reserva = await _serviceCms.UpdateReservaAsync(reserva);
                 if(reserva == null)
                 {
                     return NotFound($"Reserva {id} Not found");
@@ -126,8 +126,13 @@ namespace CmsEuroval
 
             try
             {
-               await _context.CreateReservaAsync(reserva);
-              
+                reserva =  await _serviceCms.CreateReservaAsync(reserva);
+                if(reserva == null)
+                {
+                    return BadRequest("reserva not created");
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -154,13 +159,13 @@ namespace CmsEuroval
 
             try
             {
-                reserva = await _context.GetReservaAsync(id);
+                reserva = await _serviceCms.GetReservaAsync(id);
                 if (reserva == null)
                 {
                     return NotFound($"Reserva is not found {id}");
                 }
 
-                await _context.RemoveReservaAsync(id);
+                await _serviceCms.RemoveReservaAsync(id);
             }
             catch (Exception ex)
             {
@@ -173,7 +178,7 @@ namespace CmsEuroval
 
         private async Task<bool> ReservaExists(int id)
         {
-            return await _context.ReservaExistsAsync(id);
+            return await _serviceCms.ReservaExistsAsync(id);
         }
     }
 }

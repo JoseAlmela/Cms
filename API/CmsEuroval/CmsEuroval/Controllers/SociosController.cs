@@ -23,12 +23,12 @@ namespace CmsEuroval
     [Produces("text/json")]
     public class SociosController : ControllerBase
     {
-        private readonly IEurovalCmsService _context;
+        private readonly IEurovalCmsService _serviceCms;
         private readonly ILogger<SociosController> _logger;
 
         public SociosController(IEurovalCmsService context, ILogger<SociosController> logging)
         {
-            _context = context;
+            _serviceCms = context;
             this._logger = logging;
         }
 
@@ -40,7 +40,7 @@ namespace CmsEuroval
         {
             try
             {
-                return  Ok(await _context.GetSociosAsync());
+                return  Ok(await _serviceCms.GetSociosAsync());
 
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace CmsEuroval
 
             try
             {
-                var socio = await _context.GetSocioAsync(id);
+                var socio = await _serviceCms.GetSocioAsync(id);
 
                 if (socio == null)
                 {
@@ -98,7 +98,7 @@ namespace CmsEuroval
 
             try
             {
-                socio = await _context.UpdateSocioAsync(socio);
+                socio = await _serviceCms.UpdateSocioAsync(socio);
                 if(socio == null)
                 {
                     return NotFound($"Socio {id} Not found");
@@ -126,7 +126,7 @@ namespace CmsEuroval
 
             try
             {
-               await _context.CreateSocioAsync(socio);
+               await _serviceCms.CreateSocioAsync(socio);
               
             }
             catch (Exception ex)
@@ -154,13 +154,13 @@ namespace CmsEuroval
 
             try
             {
-                socio = await _context.GetSocioAsync(id);
+                socio = await _serviceCms.GetSocioAsync(id);
                 if (socio == null)
                 {
                     return NotFound($"Socio is not found {id}");
                 }
 
-                await _context.RemoveSocioAsync(id);
+                await _serviceCms.RemoveSocioAsync(id);
             }
             catch (Exception ex)
             {
@@ -173,7 +173,7 @@ namespace CmsEuroval
 
         private async Task<bool> SocioExists(int id)
         {
-            return await _context.SocioExistsAsync(id);
+            return await _serviceCms.SocioExistsAsync(id);
         }
     }
 }
