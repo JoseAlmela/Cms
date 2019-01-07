@@ -12,6 +12,8 @@ using AutoMapper;
 using EurovalDataAccess.Entities;
 using EurovalDataAccess;
 using Microsoft.EntityFrameworkCore;
+using EurovalDataAccess.Repository;
+using EurovalBusinessLogic.Services;
 
 namespace CmsEuroval
 {
@@ -56,6 +58,11 @@ namespace CmsEuroval
                 cfg.UseSqlServer(Configuration.GetConnectionString("CmsEurovalConnectionString"), b => b.MigrationsAssembly("CmsEuroval"));
             });
             services.AddAutoMapper();
+
+            services.AddTransient<EurovalCmsSeeder>();
+
+            services.AddScoped<IEurovalCmsRepository, EurovalCmsRepository>();
+            services.AddScoped<IEurovalCmsService, EurovalCmsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +86,8 @@ namespace CmsEuroval
             {
                 var dbContext = serviceScope.ServiceProvider.GetService<EurovalCmsContext>();
                 dbContext.Database.EnsureCreated();
+                var es = serviceScope.ServiceProvider.GetService<EurovalCmsSeeder>();
+                es.SeedAsync().Wait();
             }
         }
     }
