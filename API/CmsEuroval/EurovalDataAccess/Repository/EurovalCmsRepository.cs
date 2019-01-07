@@ -175,6 +175,47 @@ namespace EurovalDataAccess.Repository
                 return null;
             }
         }
+
+        public async Task<IEnumerable<Reserva>> GetAllReservasAsync(bool includeExtraInfo)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(GetAllReservasAsync)} was called");
+                var q = _ctx.Reservas
+                           .AsNoTracking()
+                           .OrderBy(p => p.FechaReserva);
+                if (includeExtraInfo)
+                {
+                    q.Include(r => r.Pista);
+                    q.Include(r => r.Socio);
+
+                }
+                return await q                          
+                           .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get all Reserva: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<Reserva> GetReservaAsync(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(GetReservaAsync)} was called");
+
+                return await _ctx.Reservas
+                          .AsNoTracking()
+                          .SingleOrDefaultAsync(p => p.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get Rerserva: {ex}");
+                return null;
+            }
+        }
         #endregion
     }
 }

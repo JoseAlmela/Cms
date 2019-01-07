@@ -21,41 +21,41 @@ namespace CmsEuroval
     [Route("api/[controller]")]
     [ApiController]
     [Produces("text/json")]
-    public class PistasController : ControllerBase
+    public class ReservasController : ControllerBase
     {
         private readonly IEurovalCmsService _context;
-        private readonly ILogger<PistasController> _logger;
+        private readonly ILogger<ReservasController> _logger;
 
-        public PistasController(IEurovalCmsService context, ILogger<PistasController> logging)
+        public ReservasController(IEurovalCmsService context, ILogger<ReservasController> logging)
         {
             _context = context;
             this._logger = logging;
         }
 
-        // GET: api/Pistas
+        // GET: api/Reservas
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<IEnumerable<PistaViewModel>>> GetPistas()
+        public async Task<ActionResult<IEnumerable<ReservaViewModel>>> GetReservas(bool includeExtraInfo = true)
         {
             try
             {
-                return  Ok(await _context.GetPistasAsync());
+                return  Ok(await _context.GetReservasAsync(includeExtraInfo));
 
             }
             catch (Exception ex)
             {
 
                 _logger.LogError($"Failed to get Pisas: {ex}");
-                return BadRequest("Failed to get pistass");
+                return BadRequest("Failed to get Reservass");
             }
         }
 
-        // GET: api/Pistas/5
+        // GET: api/Reservas/5
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<PistaViewModel>> GetPista([FromRoute] int id)
+        public async Task<ActionResult<ReservaViewModel>> GetReserva([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -64,60 +64,60 @@ namespace CmsEuroval
 
             try
             {
-                var pista = await _context.GetPistaAsync(id);
+                var reserva = await _context.GetReservaAsync(id);
 
-                if (pista == null)
+                if (reserva == null)
                 {
-                    return NotFound($"Pista {id} not found");
+                    return NotFound($"Reserva {id} not found");
                 }
 
-                return Ok(pista);
+                return Ok(reserva);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Failed to get Pista: {ex}");
-                return BadRequest("Failed to get Pista");
+                _logger.LogError($"Failed to get Reserva: {ex}");
+                return BadRequest("Failed to get Reserva");
             }
         }
 
-        // PUT: api/Pistas/5
+        // PUT: api/Reservas/5
         [HttpPut("{id}")]
         [ProducesResponseType(202)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<PistaViewModel>> PutPista([FromRoute] int id, [FromBody] PistaViewModel pista)
+        public async Task<ActionResult<ReservaViewModel>> PutReserva([FromRoute] int id, [FromBody] ReservaViewModel reserva)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != pista.Id)
+            if (id != reserva.Id)
             {
                 return BadRequest("Id from route is different from entity");
             }
 
             try
             {
-                pista = await _context.UpdatePistaAsync(pista);
-                if(pista == null)
+                reserva = await _context.UpdateReservaAsync(reserva);
+                if(reserva == null)
                 {
-                    return NotFound($"Pista {id} Not found");
+                    return NotFound($"Reserva {id} Not found");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Failed to Update Pista: {ex}");
-                return BadRequest($"Failed to update pista {pista.Id}");
+                _logger.LogError($"Failed to Update Reserva: {ex}");
+                return BadRequest($"Failed to update reserva {reserva.Id}");
             }
 
             return NoContent();
         }
 
-        // POST: api/Pistas
+        // POST: api/Reservas
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<PistaViewModel>> PostPista([FromBody] PistaViewModel pista)
+        public async Task<ActionResult<ReservaViewModel>> PostReserva([FromBody] ReservaViewModel reserva)
         {
             if (!ModelState.IsValid)
             {
@@ -126,26 +126,26 @@ namespace CmsEuroval
 
             try
             {
-               await _context.CreatePistaAsync(pista);
+               await _context.CreateReservaAsync(reserva);
               
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Failed to create Pista: {ex}");
-                return BadRequest("Failed Create Pista");
+                _logger.LogError($"Failed to create Reserva: {ex}");
+                return BadRequest("Failed Create Reserva");
             }
 
-            return CreatedAtAction("GetPista", new { id = pista.Id }, pista);
+            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
         }
 
-        // DELETE: api/Pistas/5
+        // DELETE: api/Reservas/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<PistaViewModel>> DeletePista([FromRoute] int id)
+        public async Task<ActionResult<Reserva>> DeleteReserva([FromRoute] int id)
         {
-            PistaViewModel pista;
+            ReservaViewModel reserva;
 
             if (!ModelState.IsValid)
             {
@@ -154,26 +154,26 @@ namespace CmsEuroval
 
             try
             {
-                pista = await _context.GetPistaAsync(id);
-                if (pista == null)
+                reserva = await _context.GetReservaAsync(id);
+                if (reserva == null)
                 {
-                    return NotFound($"Pista is not found {id}");
+                    return NotFound($"Reserva is not found {id}");
                 }
 
-                await _context.RemovePistaAsync(id);
+                await _context.RemoveReservaAsync(id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Failed to create Pista: {ex}");
-                return BadRequest($"Failed to delete pista");
+                _logger.LogError($"Failed to create Reserva: {ex}");
+                return BadRequest($"Failed to delete Reserva");
             }
 
-            return Ok(pista);
+            return Ok(reserva);
         }
 
-        private async Task<bool> PistaExists(int id)
+        private async Task<bool> ReservaExists(int id)
         {
-            return await _context.PistaExistsAsync(id);
+            return await _context.ReservaExistsAsync(id);
         }
     }
 }

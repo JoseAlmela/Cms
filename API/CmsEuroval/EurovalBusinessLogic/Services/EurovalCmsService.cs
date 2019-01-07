@@ -56,7 +56,7 @@ namespace EurovalBusinessLogic.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> PistaExists(int id)
+        public async Task<bool> PistaExistsAsync(int id)
         {
             return await _repository.EntityExistsAsync<Pista>(id);
         }
@@ -77,14 +77,14 @@ namespace EurovalBusinessLogic.Services
             catch (DbUpdateConcurrencyException e)
             {
 
-                if (! await PistaExists(pista.Id))
+                if (! await PistaExistsAsync(pista.Id))
                 {
                     _logger.LogError($"Failed to update Pista {pista.Id}. Not found: {e}");
                     return null;
                 }
                 else
                 {
-                    _logger.LogError($"Failed to update Pista {pista.Id}. Not found: {e}");
+                    _logger.LogError($"Failed to update Pista {pista.Id}.  Unknown Problem: {e}");
                     throw new Exception("Unknown problem with the database", e);
                 }
             }
@@ -177,7 +177,7 @@ namespace EurovalBusinessLogic.Services
                 }
                 else
                 {
-                    _logger.LogError($"Failed to update Pista {socio.Id}. Not found: {e}");
+                    _logger.LogError($"Failed to update Pista {socio.Id}.  Unknown Problem: {e}");
                     throw new Exception("Unknown problem with the database", e);
                 }
             }
@@ -215,6 +215,80 @@ namespace EurovalBusinessLogic.Services
         public async Task<bool> SocioExistsAsync(int id)
         {
             return await _repository.EntityExistsAsync<Socio>(id);
+        }
+
+        #endregion
+
+        #region Reservas
+        public async Task<IEnumerable<ReservaViewModel>> GetReservasAsync(bool includeExtraInfo)
+        {
+            return _mapper.Map<IEnumerable<Reserva>, IEnumerable<ReservaViewModel>>
+                (await _repository.GetAllReservasAsync(includeExtraInfo));
+        }
+
+        public async Task<ReservaViewModel> GetReservaAsync(int id)
+        {
+            return _mapper.Map<Reserva, ReservaViewModel>
+                (await _repository.GetReservaAsync(id));
+        }
+
+        public async Task<ReservaViewModel> UpdateReservaAsync(ReservaViewModel reserva)
+        {
+            try
+            {
+                _repository.ModifyEntity(_mapper.Map<ReservaViewModel, Reserva>(reserva));
+                await _repository.SaveAllAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+
+                if (!await ReservaExistsAsync(reserva.Id))
+                {
+                    _logger.LogError($"Failed to update Reserva {reserva.Id}. Not found: {e}");
+                    return null;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to update Reserva {reserva.Id}. Unknown Problem: {e}");
+                    throw new Exception("Unknown problem with the database", e);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to Update Reserva: {ex}");
+                return null;
+            }
+
+            return reserva;
+
+        }
+
+        public async Task<ReservaViewModel> CreateReservaAsync(ReservaViewModel reserva)
+        {
+            try
+            {
+                Reserva p = _mapper.Map<ReservaViewModel, Reserva>(reserva);
+                _repository.AddEntity(p);
+                await _repository.SaveAllAsync();
+                reserva.Id = p.Id;
+                return reserva;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to Create Pista: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<bool> RemoveReservaAsync(int id)
+        {
+                _repository.RemoveEntity(new Reserva { Id = id });
+                return await _repository.SaveAllAsync();
+        }
+
+        public Task<bool> ReservaExistsAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

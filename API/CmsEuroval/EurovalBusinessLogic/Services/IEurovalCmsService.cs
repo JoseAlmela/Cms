@@ -9,7 +9,7 @@ namespace EurovalBusinessLogic.Services
     {
         Task<IEnumerable<PistaViewModel>> GetPistasAsync();
         Task<PistaViewModel> GetPistaAsync(int id);
-        Task<bool> PistaExists(int id);
+        Task<bool> PistaExistsAsync(int id);
         Task<PistaViewModel> UpdatePistaAsync(PistaViewModel pista);
         Task<PistaViewModel> CreatePistaAsync(PistaViewModel pista);
         Task<bool> RemovePistaAsync(int id);
@@ -19,5 +19,11 @@ namespace EurovalBusinessLogic.Services
         Task<SocioViewModel> CreateSocioAsync(SocioViewModel socio);
         Task<bool> RemoveSocioAsync(int id);
         Task<bool> SocioExistsAsync(int id);
+        Task<IEnumerable<ReservaViewModel>> GetReservasAsync(bool includeExtraInfo);
+        Task<ReservaViewModel> GetReservaAsync(int id);
+        Task<ReservaViewModel> UpdateReservaAsync(ReservaViewModel reserva);
+        Task<ReservaViewModel> CreateReservaAsync(ReservaViewModel reserva);
+        Task<bool> RemoveReservaAsync(int id);
+        Task<bool> ReservaExistsAsync(int id);
     }
 }

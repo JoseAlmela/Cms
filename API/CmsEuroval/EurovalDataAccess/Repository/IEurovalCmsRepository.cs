@@ -16,5 +16,7 @@ namespace EurovalDataAccess.Repository
         Task<Pista> GetPistaAsync(int id);
         Task<Socio> GetSocioAsync(int id);
         Task<IEnumerable<Socio>> GetAllSociosAsync();
+        Task<IEnumerable<Reserva>> GetAllReservasAsync(bool includeExtraInfo);
+        Task<Reserva> GetReservaAsync(int id);
     }
 }
