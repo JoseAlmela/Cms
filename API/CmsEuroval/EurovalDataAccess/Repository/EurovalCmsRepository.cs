@@ -129,8 +129,52 @@ namespace EurovalDataAccess.Repository
             }
         }
 
-#endregion
+        #endregion
 
+        #region Socios
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Socio>> GetAllSociosAsync()
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(GetAllSociosAsync)} was called");
 
+                return await _ctx.Socios
+                           .AsNoTracking()
+                           .OrderBy(p => p.Nombre)
+                           .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get all Socios: {ex}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Socio> GetSocioAsync(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(GetSocioAsync)} was called");
+
+                return await _ctx.Socios
+                          .AsNoTracking()
+                          .SingleOrDefaultAsync(p => p.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get Socio: {ex}");
+                return null;
+            }
+        }
+        #endregion
     }
 }

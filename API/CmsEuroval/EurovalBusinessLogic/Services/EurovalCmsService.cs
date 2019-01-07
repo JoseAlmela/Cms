@@ -29,7 +29,7 @@ namespace EurovalBusinessLogic.Services
             this._logger = logger;
             this._mapper = mapper;
         }
-
+        #region Pistas
         /// <summary>
         /// 
         /// </summary>
@@ -49,27 +49,6 @@ namespace EurovalBusinessLogic.Services
         {
             return _mapper.Map<Pista, PistaViewModel>
                 (await _repository.GetPistaAsync(id));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pista"></param>
-        /// <returns></returns>
-        public PistaViewModel CreatePista(PistaViewModel pista)
-        {
-            try
-            {
-                _repository.AddEntity(pista);
-                _repository.SaveAllAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to get Pista: {ex}");
-                return null;
-            }
-
-            return pista;
         }
 
         /// <summary>
@@ -150,5 +129,94 @@ namespace EurovalBusinessLogic.Services
             _repository.RemoveEntity(new Pista { Id = id });
             return await _repository.SaveAllAsync();
         }
+
+        #endregion
+
+        #region Socios
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<SocioViewModel>> GetSociosAsync()
+        {
+            return _mapper.Map<IEnumerable<Socio>, IEnumerable<SocioViewModel>>
+                (await _repository.GetAllSociosAsync());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<SocioViewModel> GetSocioAsync(int id)
+        {
+            return _mapper.Map<Socio, SocioViewModel>
+                (await _repository.GetSocioAsync(id));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socio"></param>
+        /// <returns></returns>
+        public async Task<SocioViewModel> UpdateSocioAsync(SocioViewModel socio)
+        {
+            try
+            {
+                _repository.ModifyEntity(_mapper.Map<SocioViewModel, Socio>(socio));
+                await _repository.SaveAllAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+
+                if (!await SocioExistsAsync(socio.Id))
+                {
+                    _logger.LogError($"Failed to update Socio {socio.Id}. Not found: {e}");
+                    return null;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to update Pista {socio.Id}. Not found: {e}");
+                    throw new Exception("Unknown problem with the database", e);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to Update Pista: {ex}");
+                return null;
+            }
+
+            return socio;
+        }
+
+        public async Task<SocioViewModel> CreateSocioAsync(SocioViewModel socio)
+        {
+            try
+            {
+                _repository.AddEntity(socio);
+               await _repository.SaveAllAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get Socio: {ex}");
+                return null;
+            }
+
+            return socio;
+        }
+
+        public async Task<bool> RemoveSocioAsync(int id)
+        {
+            _repository.RemoveEntity(new Socio { Id = id });
+            return await _repository.SaveAllAsync();
+        }
+
+        public async Task<bool> SocioExistsAsync(int id)
+        {
+            return await _repository.EntityExistsAsync<Socio>(id);
+        }
+
+        #endregion
     }
 }
