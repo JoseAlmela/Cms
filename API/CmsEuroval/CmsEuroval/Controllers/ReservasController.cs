@@ -33,6 +33,11 @@ namespace CmsEuroval
         }
 
         // GET: api/Reservas
+        /// <summary>
+        /// get all reservas
+        /// </summary>
+        /// <param name="includeExtraInfo"> if true it also get all the relationships.</param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -52,6 +57,11 @@ namespace CmsEuroval
         }
 
         // GET: api/Reservas/5
+        /// <summary>
+        /// Get the reserva with the id passed as parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -81,6 +91,12 @@ namespace CmsEuroval
         }
 
         // PUT: api/Reservas/5
+        /// <summary>
+        /// Updates the reserva passed as a parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="reserva"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(202)]
         [ProducesResponseType(400)]
@@ -114,6 +130,11 @@ namespace CmsEuroval
         }
 
         // POST: api/Reservas
+        /// <summary>
+        /// Creates a new reserva.
+        /// </summary>
+        /// <param name="reserva"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -144,6 +165,11 @@ namespace CmsEuroval
         }
 
         // DELETE: api/Reservas/5
+        /// <summary>
+        /// Deletes the pista with the id passed as parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -176,6 +202,11 @@ namespace CmsEuroval
             return Ok(reserva);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private async Task<bool> ReservaExists(int id)
         {
             return await _serviceCms.ReservaExistsAsync(id);

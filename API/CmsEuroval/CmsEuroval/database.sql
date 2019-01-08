@@ -1,41 +1,171 @@
-﻿IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Nombre') AND [object_id] = OBJECT_ID(N'[Pistas]'))
-    SET IDENTITY_INSERT [Pistas] ON;
-INSERT INTO [Pistas] ([Id], [Nombre])
-VALUES (1, N'Padding'),
-(2, N'Football'),
-(3, N'Soccer');
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Nombre') AND [object_id] = OBJECT_ID(N'[Pistas]'))
-    SET IDENTITY_INSERT [Pistas] OFF;
+﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
 
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Email', N'Nombre') AND [object_id] = OBJECT_ID(N'[Socios]'))
-    SET IDENTITY_INSERT [Socios] ON;
-INSERT INTO [Socios] ([Id], [Email], [Nombre])
-VALUES (1, N'micorreo@euroval.com', N'Jose'),
-(2, N'micorre2o@euroval.com', N'Juan'),
-(3, N'micorre3o@euroval.com', N'Miguel');
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Email', N'Nombre') AND [object_id] = OBJECT_ID(N'[Socios]'))
-    SET IDENTITY_INSERT [Socios] OFF;
+CREATE TABLE [AspNetRoles] (
+    [Id] nvarchar(450) NOT NULL,
+    [Name] nvarchar(256) NULL,
+    [NormalizedName] nvarchar(256) NULL,
+    [ConcurrencyStamp] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetRoles] PRIMARY KEY ([Id])
+);
 
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Duracion', N'FechaReserva', N'PistaId', N'SocioId') AND [object_id] = OBJECT_ID(N'[Reservas]'))
-    SET IDENTITY_INSERT [Reservas] ON;
-INSERT INTO [Reservas] ([Id], [Duracion], [FechaReserva], [PistaId], [SocioId])
-VALUES (1, '02:54:00', '2019-01-30T21:31:13.9510000+01:00', 1, 1),
-(4, '02:01:00', '2019-02-06T21:31:13.9540000+01:00', 2, 1),
-(7, '00:10:00', '2019-06-26T21:31:13.9540000+02:00', 3, 1),
-(2, '03:04:00', '2019-07-04T21:31:13.9540000+02:00', 1, 2),
-(5, '01:06:00', '2019-08-27T21:31:13.9540000+02:00', 2, 2),
-(8, '03:06:00', '2019-03-11T21:31:13.9540000+01:00', 3, 2),
-(3, '02:19:00', '2019-04-24T21:31:13.9540000+02:00', 1, 3),
-(6, '02:08:00', '2019-02-08T21:31:13.9540000+01:00', 2, 3),
-(9, '01:40:00', '2019-02-10T21:31:13.9540000+01:00', 3, 3);
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Duracion', N'FechaReserva', N'PistaId', N'SocioId') AND [object_id] = OBJECT_ID(N'[Reservas]'))
-    SET IDENTITY_INSERT [Reservas] OFF;
+CREATE TABLE [AspNetUsers] (
+    [Id] nvarchar(450) NOT NULL,
+    [UserName] nvarchar(256) NULL,
+    [NormalizedUserName] nvarchar(256) NULL,
+    [Email] nvarchar(256) NULL,
+    [NormalizedEmail] nvarchar(256) NULL,
+    [EmailConfirmed] bit NOT NULL,
+    [PasswordHash] nvarchar(max) NULL,
+    [SecurityStamp] nvarchar(max) NULL,
+    [ConcurrencyStamp] nvarchar(max) NULL,
+    [PhoneNumber] nvarchar(max) NULL,
+    [PhoneNumberConfirmed] bit NOT NULL,
+    [TwoFactorEnabled] bit NOT NULL,
+    [LockoutEnd] datetimeoffset NULL,
+    [LockoutEnabled] bit NOT NULL,
+    [AccessFailedCount] int NOT NULL,
+    [ApiUser] bit NOT NULL,
+    CONSTRAINT [PK_AspNetUsers] PRIMARY KEY ([Id])
+);
 
 GO
+
+CREATE TABLE [Pistas] (
+    [Id] int NOT NULL IDENTITY,
+    [Nombre] nvarchar(max) NULL,
+    CONSTRAINT [PK_Pistas] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [Socios] (
+    [Id] int NOT NULL IDENTITY,
+    [Nombre] nvarchar(max) NULL,
+    [Email] nvarchar(max) NULL,
+    CONSTRAINT [PK_Socios] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [AspNetRoleClaims] (
+    [Id] int NOT NULL IDENTITY,
+    [RoleId] nvarchar(450) NOT NULL,
+    [ClaimType] nvarchar(max) NULL,
+    [ClaimValue] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [AspNetUserClaims] (
+    [Id] int NOT NULL IDENTITY,
+    [UserId] nvarchar(450) NOT NULL,
+    [ClaimType] nvarchar(max) NULL,
+    [ClaimValue] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [AspNetUserLogins] (
+    [LoginProvider] nvarchar(450) NOT NULL,
+    [ProviderKey] nvarchar(450) NOT NULL,
+    [ProviderDisplayName] nvarchar(max) NULL,
+    [UserId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY ([LoginProvider], [ProviderKey]),
+    CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [AspNetUserRoles] (
+    [UserId] nvarchar(450) NOT NULL,
+    [RoleId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY ([UserId], [RoleId]),
+    CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [AspNetUserTokens] (
+    [UserId] nvarchar(450) NOT NULL,
+    [LoginProvider] nvarchar(450) NOT NULL,
+    [Name] nvarchar(450) NOT NULL,
+    [Value] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY ([UserId], [LoginProvider], [Name]),
+    CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [Reservas] (
+    [Id] int NOT NULL IDENTITY,
+    [PistaId] int NOT NULL,
+    [SocioId] int NOT NULL,
+    [FechaReserva] datetime2 NOT NULL,
+    [Duracion] time NOT NULL,
+    CONSTRAINT [PK_Reservas] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Reservas_Pistas_PistaId] FOREIGN KEY ([PistaId]) REFERENCES [Pistas] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Reservas_Socios_SocioId] FOREIGN KEY ([SocioId]) REFERENCES [Socios] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);
+
+GO
+
+CREATE UNIQUE INDEX [RoleNameIndex] ON [AspNetRoles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
+
+GO
+
+CREATE INDEX [IX_AspNetUserClaims_UserId] ON [AspNetUserClaims] ([UserId]);
+
+GO
+
+CREATE INDEX [IX_AspNetUserLogins_UserId] ON [AspNetUserLogins] ([UserId]);
+
+GO
+
+CREATE INDEX [IX_AspNetUserRoles_RoleId] ON [AspNetUserRoles] ([RoleId]);
+
+GO
+
+CREATE INDEX [EmailIndex] ON [AspNetUsers] ([NormalizedEmail]);
+
+GO
+
+CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHERE [NormalizedUserName] IS NOT NULL;
+
+GO
+
+CREATE INDEX [IX_Reservas_PistaId] ON [Reservas] ([PistaId]);
+
+GO
+
+CREATE INDEX [IX_Reservas_SocioId] ON [Reservas] ([SocioId]);
+
+GO
+-- Migrations
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190102230725_InitialCreate', N'2.1.4-rtm-31024');
+
+GO
+
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20190103203114_DemoData', N'2.1.4-rtm-31024');

@@ -33,6 +33,10 @@ namespace CmsEuroval
         }
 
         // GET: api/Pistas
+        /// <summary>
+        /// Get all pistas.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -52,6 +56,11 @@ namespace CmsEuroval
         }
 
         // GET: api/Pistas/5
+        /// <summary>
+        /// Get the pista with the id passed as parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -81,6 +90,12 @@ namespace CmsEuroval
         }
 
         // PUT: api/Pistas/5
+        /// <summary>
+        /// Updates the pista passed as a parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pista"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(202)]
         [ProducesResponseType(400)]
@@ -114,6 +129,11 @@ namespace CmsEuroval
         }
 
         // POST: api/Pistas
+        /// <summary>
+        /// Creates a new pista.
+        /// </summary>
+        /// <param name="pista"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -139,6 +159,11 @@ namespace CmsEuroval
         }
 
         // DELETE: api/Pistas/5
+        /// <summary>
+        /// Deletes the pista with the id passed as parameter.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -171,6 +196,11 @@ namespace CmsEuroval
             return Ok(pista);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private async Task<bool> PistaExists(int id)
         {
             return await _serviceCms.PistaExistsAsync(id);

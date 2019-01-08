@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using EurovalDataAccess.Repository;
 using EurovalBusinessLogic.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
+using System.IO;
+using System;
 
 namespace CmsEuroval
 {
@@ -67,8 +70,32 @@ namespace CmsEuroval
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "CMS API",
+                    Description = "CRUD for managing Pistas, Usuarios, reservas and socios.",
+                    TermsOfService = "None",
+                    Contact = new Contact
+                    {
+                        Name = "Jose",
+                        Email = "josealmelaperez@gmail.com",
+                        Url = "https://josealmela.es"
+                    },
+                    License = new License
+                    {
+                        Name = "Use under LICX",
+                        Url = "https://example.com/license"
+                    }
+                });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,6 +127,7 @@ namespace CmsEuroval
             using (var serviceScope = serviceScopeFactory.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetService<EurovalCmsContext>();
+                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                 dbContext.Database.EnsureCreated();
                 var es = serviceScope.ServiceProvider.GetService<EurovalCmsSeeder>();
                 es.SeedAsync().Wait();

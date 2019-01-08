@@ -36,7 +36,7 @@ namespace CmsEuroval
                 }
             }
 
-            CmsUser user = await _userManager.FindByEmailAsync("josealmelaperez@gmail.com");
+            CmsUser user = await _userManager.FindByEmailAsync("jose@euroval.com");
             if (user == null)
             {
                 user = new CmsUser
