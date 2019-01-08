@@ -1,4 +1,4 @@
-# Introduction 
+# Introducción 
 Prueba previa Backend
 [Euroval.com](Euroval.com)
 En la siguiente prueba se pide realizar un pequeño panel de control (de ahora en adelante CMS) para
@@ -22,20 +22,57 @@ Funcionalidad Exigida:
 4. CRUD de Socios
 5. CRUD de Reservas
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
+Los usuarios las entidades que crearán el resto de entidades. Estos tienen rol "admin" que es requerido para
+para el uso del resto del API. El controlador de Usuarios está abierto a su uso y no tiene ninguna restricción de uso.
+
+# Empezando la instalación
+
+1.	Requerimientos de instalación:
+    Versión de DotNet Core 2.1, Ms localDb, Visual Studio 2017 (opcional).
 2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+| Dependencia                         | Versión | Proyecto |  
+|-----------------------------------|:-----------:|-----------:|  
+|MSTest.TestFramework               | {1.2.1} | CmsEurovalUnitTest |                                                   
+|MSTest.TestAdapter                 | {1.2.1} | CmsEurovalUnitTest |                                                  
+|Moq                                | {4.10.1}| CmsEurovalUnitTest |                                                  
+|Microsoft.NETCore.App              | {2.1}   | CmsEurovalUnitTest |                                                 
+|Microsoft.NET.Test.Sdk             | {15.7.0}| CmsEurovalUnitTest |                                                  
+|Microsoft.AspNetCore.App           | {2.1.1} | EurovalDataAccess  |                                                  
+|Microsoft.NETCore.App              | {2.1}   | EurovalDataAccess  |                                                  
+|AutoMapper.Extensions.Microsoft    | {6.0.0} | EurovalBusinessLogic |                                                 
+|Microsoft.NETCore.App              | {2.1}   | EurovalBusinessLogic |                                                
+|AutoMapper                         | {8.0.0} | CmsEuroval |                                                          
+|Microsoft.AspNetCore.App           | {2.1.1} | CmsEuroval |                                                          
+|Microsoft.AspNetCore.Razor.Design  | {2.1.2} | CmsEuroval |                                                          
+|Microsoft.VisualStudio.Web.CodeGen | {2.1.1} | CmsEuroval |                                                          
+|Swashbuckle.AspNetCore             | {4.0.1} | CmsEuroval |                                                          
+|AutoMapper.Extensions.Microsoft    | {6.0.0} | CmsEuroval |                                                          
+|Microsoft.NETCore.App              | {2.1}   | CmsEuroval |                                                          
+|Microsoft.AspNetCore.Authentication| {2.1.1} | CmsEuroval | 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+3.	Última versión: V1
+4.	Referencias API 
+El API se lanza por defecto en la url https://localhost:44300/. También se puede consultar mas información del API
+a través de la página de swagger configurada en:https://localhost:44300/swagger/index.html
+Allí podrá ver información sobre los métodos y verbos del API que se exponen.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Consideraciones
+
+##Base de datos
+La aplicación creará la base de datos con nombre *CmsEurovalBd* si no existe. También introducirá unos datos de prueba
+para las entidades de API si no se encuentran datos.
+
+##Seguridad
+El usuario inicial (generado) con permisos para invocar los métodos del API expuestos es _jose@euroval.com_ con la contraseña _P@ssw0rd!_.
+Con este usuario ya puede generar un token para autenticarse y poder hacer uso del API aunque el AccountController se ha dejado abierto para demostración.
+Es requerido para invocar al resto de métodos añadir un _Header_ _Http_ llamado _Authorization_ con el contenido _Bearer_ *[Token]*. EL Api sigue el esquema de autentificación
+JwtBearer.
+La seguridad de los metodos se basa en estár autenticado y poseer el role _admin_ para la ejecución de los datos.
+
+Se han desarrollado test unitarios de algunos métodos del API donde se hace un Mock de las dependencias de los controladores.
+
+
+# Contruir y probar
+ - Para lanzar la aplicación ha de situarse desde una consola en la carpeta de la solución y lanzar el comando: *dotnet run*
+ - Para lanzar los tests ha de situarse en la carpeta del proyecto de test y lanzar el siguiente comando: *CmsEurovalUnitTest> dotnet test*
