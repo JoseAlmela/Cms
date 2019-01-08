@@ -70,10 +70,7 @@ Es requerido para invocar al resto de métodos añadir un _Header_ _Http_ llamad
 JwtBearer.
 La seguridad de los metodos se basa en estár autenticado y poseer el role _admin_ para la ejecución de los datos.
 
-Se han desarrollado test unitarios de algunos métodos del API donde se hace un Mock de las dependencias de los controladores.
-
-
 # Contruir y probar
  - Para lanzar la aplicación ha de situarse desde una consola en la carpeta de la solución y lanzar el comando: *dotnet run*
- - Para lanzar los tests ha de situarse en la carpeta del proyecto de test y lanzar el siguiente comando: *CmsEurovalUnitTest> dotnet test*
+ - Se han desarrollado test unitarios de algunos métodos del API donde se hace un Mock de las dependencias de los controladores. Para lanzar los tests ha de situarse en la carpeta del proyecto de test y lanzar el siguiente comando: *CmsEurovalUnitTest> dotnet test*
  - Puede realizar las tareas anteriores abriendo la solución de la aplicación llamada _CmsEuroval.sln_.
