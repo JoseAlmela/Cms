@@ -76,3 +76,4 @@ Se han desarrollado test unitarios de algunos métodos del API donde se hace un 
 # Contruir y probar
  - Para lanzar la aplicación ha de situarse desde una consola en la carpeta de la solución y lanzar el comando: *dotnet run*
  - Para lanzar los tests ha de situarse en la carpeta del proyecto de test y lanzar el siguiente comando: *CmsEurovalUnitTest> dotnet test*
+ - Puede realizar las tareas anteriores abriendo la solución de la aplicación llamada _CmsEuroval.sln_.
