@@ -58,18 +58,18 @@ Allí podrá ver información sobre los métodos y verbos del API que se exponen
 
 # Consideraciones
 
-##Base de datos
+## Base de datos
 La aplicación creará la base de datos con nombre *CmsEurovalBd* si no existe. También introducirá unos datos de prueba
 para las entidades de API si no se encuentran datos.
 
-##Seguridad
+## Seguridad
 El usuario inicial (generado) con permisos para invocar los métodos del API expuestos es _jose@euroval.com_ con la contraseña _P@ssw0rd!_.
 Con este usuario ya puede generar un token para autenticarse y poder hacer uso del API aunque el AccountController se ha dejado abierto para demostración.
 Es requerido para invocar al resto de métodos añadir un _Header_ _Http_ llamado _Authorization_ con el contenido _Bearer_ *[Token]*. EL Api sigue el esquema de autentificación
 JwtBearer.
 La seguridad de los metodos se basa en estár autenticado y poseer el role _admin_ para la ejecución de los datos.
 
-# Contruir y probar
+# Construir y probar
  - Para lanzar la aplicación ha de situarse desde una consola en la carpeta de la solución y lanzar el comando: *dotnet run*
  - Se han desarrollado test unitarios de algunos métodos del API donde se hace un Mock de las dependencias de los controladores. Para lanzar los tests ha de situarse en la carpeta del proyecto de test y lanzar el siguiente comando: *CmsEurovalUnitTest> dotnet test*
  - Puede realizar las tareas anteriores abriendo la solución de la aplicación llamada _CmsEuroval.sln_.
