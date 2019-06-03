@@ -1,7 +1,6 @@
 # Introducción 
-Prueba previa Backend
-[Euroval.com](Euroval.com)
-En la siguiente prueba se pide realizar un pequeño panel de control (de ahora en adelante CMS) para
+Ejemplo Backend
+En la siguiente ejemplo de Web API con .Net Core 2.3 se pide realizar un Backend para un panel de control (de ahora en adelante CMS) para
 poder gestionar un club deportivo.
 La aplicación consta de dos partes claramente diferenciadas:
 * Estructura y funcionalidad para la gestión de la web: control de acceso, usuarios, permisos, etc.
